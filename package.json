@@ -1,0 +1,13 @@
+{
+  "name": "stream_js_tests",
+  "version": "1.0.0",
+  "description": "Tests of the new changes of the NodeJS streams client.",
+  "main": "index.js",
+  "scripts": {},
+  "author": "andres.paez@dowjones.com",
+  "license": "MIT",
+  "dependencies": {
+    "dj-dna-streaming-javascript": "file:../dj-dna-streams-javascript",
+    "sqlite3": "^5.1.7"
+  }
+}
