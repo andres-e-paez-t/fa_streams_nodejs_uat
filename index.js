@@ -1,7 +1,7 @@
 const Listener = require('dj-dna-streaming-javascript').Listener;
 const sqlite3 = require('sqlite3');
 
-const db = new sqlite3.Database('test_listener.sqlite3');
+const db = new sqlite3.Database('test_listener_nodejs.sqlite3');
 
 db.serialize(() => {
     db.run('CREATE TABLE IF NOT EXISTS received_articles (an TEXT, ingestion_datetime TEXT)');
@@ -46,3 +46,10 @@ function closeClient() {
 
 process.on('SIGINT', closeClient);
 process.on('SIGTERM', closeClient);
+
+
+setTimeout(() => {listener.closeListener();}, 1000 * 60 * 60 * 2);
+
+setTimeout(() => {listener.listen(writeOnMessage);}, 1000 * 60 * 60 * 2.5);
+
+setTimeout(closeClient, 1000 * 60 * 60 * 5);

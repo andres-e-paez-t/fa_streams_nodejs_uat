@@ -1,4 +1,6 @@
-node_modules
-test_listener.sqlite3*
+node_modules*
+*.sqlite3*
 .envrc
 .env
+.ipynb_checkpoints
+*.log

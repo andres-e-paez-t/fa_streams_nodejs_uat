@@ -8,13 +8,13 @@ import os
 from dnaStreaming.listener import Listener
 
 def processMessagesQueue(queue):
-    db = sqlite3.connect('test_listener.sqlite3', isolation_level=None)
+    db = sqlite3.connect('test_listener_python.sqlite3', isolation_level=None)
     cursor = db.cursor()
     while True:
         if not queue.empty():
             message = queue.get()
             cursor.execute(
-                'INSERT INTO received_articles_python (an, ingestion_datetime) VALUES (?, ?)',
+                'INSERT INTO received_articles (an, ingestion_datetime) VALUES (?, ?)',
                 (message['an'], message['ingestion_datetime'])
             )
             print(f"Written: {message['an']}")
@@ -23,9 +23,9 @@ def processMessagesQueue(queue):
 def main():
     try:
         assert (subscription_id := os.environ['SUBSCRIPTION_ID_PYTHON']), 'The subscription for python listener is not set'
-        db = sqlite3.connect('test_listener.sqlite3', isolation_level=None)
+        db = sqlite3.connect('test_listener_python.sqlite3', isolation_level=None)
         cursor = db.cursor()
-        cursor.execute('CREATE TABLE IF NOT EXISTS received_articles_python (an TEXT, ingestion_datetime TEXT)')
+        cursor.execute('CREATE TABLE IF NOT EXISTS received_articles (an TEXT, ingestion_datetime TEXT)')
         db.close()
         the_queue = Queue()
         
@@ -49,7 +49,7 @@ def main():
             manage_closing()
         
         signal.signal(signal.SIGTERM, signal_handler)
-        future.result()
+        future.result(timeout=18_000)
     except Exception as ex:
         print(f'Se encontró una excepción {ex}')
     except KeyboardInterrupt:
